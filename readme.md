@@ -1,8 +1,5 @@
 # Cleaning up audiobook mp3 files
 
-# Cleaning up audiobook mp3 files
-
-
 1. rip with iTunes
 2. create a folder for the book
 2. copy iTunes files to riptracks folder
