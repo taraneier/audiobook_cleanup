@@ -1,21 +1,20 @@
 # Cleaning up audiobook mp3 files
 
-# Cleaning up audiobook mp3 files
-
-
 1. rip with iTunes
 2. create a folder for the book
 2. copy iTunes files to riptracks folder
 2. copy cover image in jpg format to cover folder
 3. run this to build filelist
-``` ls -1 > files.csv ```
+``` ls -1t > files.csv ```
+if this produces a list in the reverse order use
+``` mv files.csv files-orig.csv; tail -r files-orig.csv > files.csv ```
 4. open files.csv in numbers.app or spreadsheet of your choice
 	1. adjust settings to use non-existent comma as delimiter to avoid broken filenames
 	6. manually edit rows into logical order
 		1. delete . and ..
 		8. deal with 1, 10, 11 type issues
 	9. populate chapter column with chapter number on rows where chapters start
-	9. populate filename column with a formula similar to this
+	9. populate filename column with a formula similar to this in C4
 	``` IF(ISBLANK(B4),C3,CONCATENATE("Chapter_",RIGHT("0"&B4,2), ".mp3")) ```
 		1. add leading zero
 		2. add .mp3
