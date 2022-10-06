@@ -20,6 +20,7 @@ title=$2
 cd $workdir
 echo "processing $title in $workdir/"
 
+
 # sleep 10
 rm -r "$workdir/output"
 # create output directory if missing
@@ -29,7 +30,7 @@ rm -r "$workdir/output"
 tail -c1 < "$workdir/files.csv" | read -r _ || echo >> "$workdir/files.csv"
 
 
-while IFS=, read -r filename destfile block part ignore
+while IFS=, read -r filename chapter destfile block part ignore
 do
     file=${title// /_}--${destfile}
     echo "src: $filename dest:$file"
@@ -39,14 +40,14 @@ do
     then
       echo "Successfully added to file"
     else
-      echo "file doesn't exit, creating" >&2
+      echo "file doesn't exist, creating" >&2
       cat "$workdir/riptracks/$filename" > "$workdir/output/$file"
     fi
-    sleep 1
+    # sleep 1
 done < "$workdir/files.csv"
 
 
-tracks=( $(cat "$workdir/files.csv" | awk -F, {'print $2'} | uniq) )
+tracks=( $(cat "$workdir/files.csv" | awk -F, {'print $3'} | uniq) )
 
 total=${#tracks[@]}
 count=0
@@ -57,7 +58,7 @@ do
   track_title=$(echo "$track" | cut -f 1 -d '.')
   track_title="${title} - ${track_title//_/ }"
   echo "$count / $total $file $track_title"
-  eyeD3 --to-v2.4 "$workdir/output/$file" --track $count --track-total $total --disc-num 1 --disc-total 1 --title "$track_title" --add-image "$workdir/cover/cover.jpeg":FRONT_COVER
+  eyeD3 --to-v2.4 "$workdir/output/$file" --track $count --track-total $total --disc-num 1 --disc-total 1 --title "$track_title" --album "$title" --add-image "$workdir/cover/cover.jpeg":FRONT_COVER
 done
 
 mv "$workdir/output" "$workdir/$title"
